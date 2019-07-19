@@ -4,7 +4,6 @@ const sendRule = require('../modules/send-rule')
 const jwt = require('jwt-simple')
 
 var obj = {
-    id: String, // 아이디
     email: String, // 이메일
     password: String, // 패스워드
     nickname: String,
@@ -22,7 +21,7 @@ var UserSchema = new Schema(obj)
 
 // 정적 메서드
 UserSchema.statics.requiredFields = function () { // 아이디 패스워드 키값
-    return ["id", "password"] // 아이디 비밀번호 기본값
+    return ["email", "password"] // 아이디 비밀번호 기본값
 }
 UserSchema.statics.isRequiredFieldsAble = function (obj) { // 아이디 패스워드 유효성 검사
     return obj[this.requiredFields()[0]] && obj[this.requiredFields()[1]]
@@ -40,9 +39,9 @@ UserSchema.statics.filterData = function (data) { // user 스키마에 맞는 �
 }
 UserSchema.statics.getUserById = function (id) { // User ID로 User 검색
     return new Promise((resolve, reject) => {
-        this.findOne({
-            id: id
-        }, (err, data) => {
+        var findData = {}
+        findData[this.requiredFields()[0]] = id
+        this.findOne(findData, (err, data) => {
             if (err) reject(err)
             if (!data) reject(null)
             resolve(data)
