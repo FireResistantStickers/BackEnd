@@ -5,8 +5,8 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 const User = require('../model/User')
 
 var option = {
-    //jwtFromRequest: ExtractJwt.fromBodyField('token'), // Body {token:'TOKEN_STRING'}
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Header {key : 'Authorization', value : 'Bearer TOKEN_STRING'}
+    jwtFromRequest: ExtractJwt.fromBodyField('token'), // Body {token:'TOKEN_STRING'}
+    // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Header {key : 'Authorization', value : 'Bearer TOKEN_STRING'}
     secretOrKey: process.env.DB_SECRET || "STAC", // Secret Key
     //issuer : '',
     //audience : ''
