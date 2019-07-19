@@ -4,7 +4,7 @@ const sendRule = require('../../modules/send-rule')
 module.exports.getData = function (req, res, next) {
     Console.find()
         .then(data => {
-            sendRule.sendOK(res, null, data)
+            sendRule.sendOK(res, data)
         })
         .catch(err => {
             if (err) next(err)
@@ -14,7 +14,7 @@ module.exports.getData = function (req, res, next) {
 module.exports.searchData = function (req, res, next) {
     Console.find()
         .then(data => {
-            sendRule.sendOK(res, null, data.filter(x=>x.title.indexOf(req.body.searchKeyword) != -1))
+            sendRule.sendOK(res, data.filter(x => x.title.indexOf(req.body.searchKeyword) != -1))
         })
         .catch(err => {
             if (err) next(err)
@@ -23,13 +23,20 @@ module.exports.searchData = function (req, res, next) {
 }
 
 module.exports.createConsole = function (req, res, next) {
-    var newConsole = new Console(Console.filterData(req.body))
-    newConsole.email = req.user.email
-    newConsole.save(err => {
-        if (err) next(err)
-        sendRule.sendCreated(res, null, "콘솔 생성 성공")
-
+    Console.findOne({ title: req.body.title }).then(data => {
+        if (!data) {
+            var newConsole = new Console(Console.filterData(req.body))
+            newConsole.email = req.user.email
+            newConsole.save(err => {
+                if (err) next(err)
+                sendRule.sendCreated(res, null, "콘솔 생성 성공")
+            })
+        }
+        else {
+            sendRule.sendBadRequest(res, null, "이미 있는 콘솔")
+        }
     })
+
 }
 module.exports.changeConsole = function (req, res, next) {
     Console.findOne({ title: req.body.title })

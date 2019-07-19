@@ -19,7 +19,7 @@ ConsoleSchema.statics.getConsoleStatusList = function () { // User 스키마에 
 }
 ConsoleSchema.statics.filterData = function (data) { // user 스키마에 맞는 데이터만 추출
     var obj = {}
-    this.getUserStatusList().forEach(x => {
+    this.getConsoleStatusList().forEach(x => {
         if (data[x])
             obj[x] = data[x]
     })
