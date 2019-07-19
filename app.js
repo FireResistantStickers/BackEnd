@@ -15,7 +15,9 @@ const sendRule = require('./modules/send-rule')
 const passportJwtAuth = require('./modules/passport-jwt-auth')()
 const mongo = require('./modules/mongo-connect').getDB()
 const cors = require("cors")
+const history = require('connect-history-api-fallback');
 app.use(cors())
+app.use(history());
 
 app.listen(process.env.PORT || 80, () => {
     logger.logc("SERVER OPEN")
