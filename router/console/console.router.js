@@ -9,6 +9,6 @@ router.get('/getData',con.getData)
 router.post('/searchData/',con.searchData)
 
 router.post('/createConsole', passportJwtAuth.authenticate(), con.createConsole)
-router.post('/changeColsole', passportJwtAuth.authenticate(), con.changeConsole)
+router.post('/changeConsole', passportJwtAuth.authenticate(), con.changeConsole)
 
 module.exports = router

@@ -41,7 +41,15 @@ module.exports.createConsole = function (req, res, next) {
 module.exports.changeConsole = function (req, res, next) {
     Console.findOne({ title: req.body.title })
         .then(data => {
-            if (data.email == req.user.email) {
+            if (!data) {
+                var newConsole = new Console(Console.filterData(req.body))
+                newConsole.email = req.user.email
+                newConsole.save(err => {
+                    if (err) next(err)
+                    sendRule.sendCreated(res, null, "콘솔 생성 성공")
+                })
+            }
+            else if (data.email == req.user.email) {
                 data.lastChange = new Date()
                 var dataKey = Console.getConsoleStatusList()
                 dataKey.forEach(x => {
